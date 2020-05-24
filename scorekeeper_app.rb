@@ -183,7 +183,7 @@ if winning_score
 
         if scoreboard[player_turn] == winning_score
             puts "\n#{player_turn}" + " WINS!!!"
-            puts "G A M E  O V E R \n"
+            puts "G A M E  O V E R !\n"
         end
 
         break if scoreboard[player_turn] == winning_score
@@ -195,11 +195,20 @@ if !winning_score
     loop do
         print "Player turn: "
         player_turn = gets.chomp.upcase
-        break if player_turn == "END"
+        if player_turn == "END"
+            print_scoreboard(game, scoreboard)
+            puts "FINAL SCORE"
+            puts "G A M E  O V E R \n"
+            break
+        end
         until players.include?(player_turn)
             print "Please enter a valid player: "
             player_turn = gets.chomp.upcase
-            break if player_turn == "END"
+            if player_turn == "END"
+                print_scoreboard(game, scoreboard)
+                puts "FINAL SCORE ... G A M E  O V E R !\n"
+                break
+            end
         end
         print "Add score: "
         add_score = gets.to_i
