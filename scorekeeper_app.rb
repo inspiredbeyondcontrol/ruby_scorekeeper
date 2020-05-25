@@ -7,11 +7,15 @@ game = gets.chomp.upcase
 print "You are playing #{game}, correct? (y/n) "
 confirm_game = gets.chomp.downcase
 
-until confirm_game == "y"
-    until confirm_game == "y" || confirm_game == "n"
+def yes_no(a)
+    until a == "y" || a == "n"
         print "Please type 'y' for yes or 'n' for no: "
-        confirm_game = gets.chomp.downcase
+        a = gets.chomp.downcase
     end
+end
+
+until confirm_game == "y"
+    yes_no(confirm_game)
     print "What game are you playing? "
     game = gets.chomp.upcase
 
@@ -23,11 +27,7 @@ end
 # Get final score needed to win
 print "Is there a winning score? (y/n) "
 final_score = gets.chomp.downcase
-
-until final_score == "y" || final_score == "n"
-    print "Please type 'y' for yes or 'n' for no: "
-    final_score = gets.chomp.downcase
-end
+yes_no(final_score)
 
 if final_score == "y"
     print "What's the winning score? "
@@ -35,14 +35,10 @@ if final_score == "y"
     print "Winning score is #{winning_score}, correct? (y/n) "
     confirm_score = gets.chomp.downcase
     until confirm_score == "y"
-        until confirm_score == "y" || confirm_score == "n"
-            print "Please type 'y' for yes or 'n' for no: "
-            confirm_score = gets.chomp.downcase
-        end
-         print "What's the winning score? "
+        yes_no(confirm_score)
+        print "What's the winning score? "
         winning_score = gets.to_i
-
-         print "Winning score is #{winning_score}, correct? (y/n) "
+        print "Winning score is #{winning_score}, correct? (y/n) "
         confirm_score = gets.chomp.downcase
     end 
 end
@@ -56,10 +52,7 @@ print "Player name is #{player}, correct? (y/n) "
 confirm_player = gets.chomp.downcase
 
 until confirm_player == "y"
-    until confirm_player == "y" || confirm_player == "n"
-        print "Please type 'y' for yes or 'n' for no: "
-        confirm_player = gets.chomp.downcase
-    end
+    yes_no(confirm_player)
     print "Enter name of first player: "
     player = gets.chomp.upcase
 
@@ -76,10 +69,7 @@ print "Player name is #{player}, correct? (y/n) "
 confirm_player = gets.chomp.downcase
 
 until confirm_player == "y"
-    until confirm_player == "y" || confirm_player == "n"
-        print "Please type 'y' for yes or 'n' for no: "
-        confirm_player = gets.chomp.downcase
-    end
+    yes_no(confirm_player)
     print "Enter name of next player: "
     player = gets.chomp.upcase
 
@@ -91,17 +81,10 @@ players.push(player)
 
 print "Add another player? (y/n) "
 add_player = gets.chomp.downcase
-
-until add_player == "y" || add_player == "n"
-    print "Please type 'y' for yes or 'n' for no: "
-    add_player = gets.chomp.downcase
-end
+yes_no(add_player)
 
 while add_player == "y"
-    until add_player == "y" || add_player == "n"
-        print "Please type 'y' for yes or 'n' for no: "
-        add_player = gets.chomp.downcase
-    end
+    yes_no(add_player)
     print "Enter name of next player:  "
     player = gets.chomp.upcase
     
@@ -109,10 +92,7 @@ while add_player == "y"
     confirm_player = gets.chomp.downcase
     
     until confirm_player == "y"
-        until confirm_player == "y" || confirm_player == "n"
-            print "Please type 'y' for yes or 'n' for no: "
-            confirm_player = gets.chomp.downcase
-        end
+        yes_no(confirm_player)
         print "Enter name of next player: "
         player = gets.chomp.upcase
 
