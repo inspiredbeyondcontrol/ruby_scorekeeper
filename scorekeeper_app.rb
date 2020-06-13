@@ -1,6 +1,5 @@
 puts "Welcome to Scorekeeper, by Christopher Adams"
 
-# Get name of game being played
 print "What game are you playing? "
 game = gets.chomp.upcase
 
@@ -23,8 +22,6 @@ until confirm_game == "y"
     confirm_game = gets.chomp.downcase
 end
 
-
-# Get final score needed to win
 print "Is there a winning score? (y/n) "
 final_score = gets.chomp.downcase
 yes_no(final_score)
@@ -43,7 +40,6 @@ if final_score == "y"
     end 
 end
 
-# Get names of players
 players = Array.new
 print "Enter name of first player: "
 player = gets.chomp.upcase
@@ -105,103 +101,109 @@ while add_player == "y"
     add_player = gets.chomp.downcase
 end
 
-# Create & display scoreboard
-scoreboard = Hash.new
-score = 0
+loop do
+    scoreboard = Hash.new
+    score = 0
 
-players.each do |player|
-    scoreboard[player] = score
-end
+    players.each do |player|
+        scoreboard[player] = score
+    end
 
-def print_scoreboard(game, scoreboard)
-    puts "-" * 20
-    sleep(1)
-    puts "-" * 20
-    sleep(1)
-    puts " " * 5 + game
-    sleep(1)
-    puts "\n"
-    scoreboard.each do |player, score|
-        puts "#{player}: ".ljust(10) + "#{score}".rjust(10)
+    def print_scoreboard(game, scoreboard)
+        puts "-" * 20
+        puts "-" * 20
+        puts " " * 5 + game
         sleep(1)
+        puts "\n"
+        scoreboard.each do |player, score|
+            puts "#{player}: ".ljust(10) + "#{score}".rjust(10)
+            sleep(1)
+        end
+        puts "\n\n"
     end
-    puts "\n\n"
-end
 
-print_scoreboard(game, scoreboard)
+    print_scoreboard(game, scoreboard)
 
-# Start game
-if game == "FARKLE"
-    puts "First to score exactly 10,000 points wins!"
-    puts "\n"
-    sleep(2)
-    puts "Start game!"
-    puts "\n"
-end
+    if game == "FARKLE"
+        puts "First to score exactly 10,000 points wins!"
+        puts "\n"
+        sleep(2)
+        puts "Start game!"
+        puts "\n"
+    end
 
-# Start scorekeeping
-# winning_score TRUE
-if winning_score
-    loop do
-        print "Player turn: "
-        player_turn = gets.chomp.upcase
-        until players.include?(player_turn)
-            print "Please enter a valid player: "
+
+    def game_over(player)
+        puts "\n#{player}" + " WINS!!!"
+        puts "G A M E  O V E R !\n"
+    end
+
+    if winning_score
+        loop do
+            print "Player turn: "
             player_turn = gets.chomp.upcase
-        end
-        
-        print "Add score: "
-        add_score = gets.to_i
-        
-        scoreboard[player_turn] += add_score
-        if scoreboard[player_turn] > winning_score
-            puts "\nSorry, you cannot score higher than #{winning_score}. Removing last score.\n"
-            scoreboard[player_turn] -= add_score
-        end
+            until players.include?(player_turn)
+                print "Please enter a valid player: "
+                player_turn = gets.chomp.upcase
+            end
 
-        print_scoreboard(game, scoreboard)
+            print "Add score: "
+            add_score = gets.to_i
 
-        if scoreboard[player_turn] == winning_score
-            puts "\n#{player_turn}" + " WINS!!!"
-            puts "G A M E  O V E R !\n"
-        end
+            scoreboard[player_turn] += add_score
+            if scoreboard[player_turn] > winning_score
+                puts "\nSorry, you cannot score higher than #{winning_score}. Removing last score.\n"
+                scoreboard[player_turn] -= add_score
+            end
 
-        break if scoreboard[player_turn] == winning_score
-    end
-end
-
-# winning_score FALSE
-if !winning_score
-    loop do
-        print "Player turn: "
-        player_turn = gets.chomp.upcase
-        if player_turn == "END"
             print_scoreboard(game, scoreboard)
-            puts "FINAL SCORE"
-            puts "G A M E  O V E R \n"
-            break
+
+            if scoreboard[player_turn] == winning_score
+                game_over(player_turn)
+            end
+
+            break if scoreboard[player_turn] == winning_score
         end
-        until players.include?(player_turn)
-            print "Please enter a valid player: "
+    end
+
+    if !winning_score
+        loop do
+            print "Player turn: "
             player_turn = gets.chomp.upcase
             if player_turn == "END"
-                print_scoreboard(game, scoreboard)
-                puts "FINAL SCORE ... G A M E  O V E R !\n"
+                winner = scoreboard.key(scoreboard.values.max)
+                game_over(winner)
                 break
             end
+            until players.include?(player_turn)
+                print "Please enter a valid player: "
+                player_turn = gets.chomp.upcase
+                if player_turn == "END"
+                    winner = scoreboard.key(scoreboard.values.max)
+                    game_over(winner)
+                    break
+                end
+            end
+            print "Add score: "
+            add_score = gets.to_i
+
+            scoreboard[player_turn] += add_score
+
+            print_scoreboard(game, scoreboard)
+
+            puts "type 'end' to end the game\n"
         end
-        print "Add score: "
-        add_score = gets.to_i
-
-        scoreboard[player_turn] += add_score
-
-        print_scoreboard(game, scoreboard)
-        
-        puts "type 'end' to end the game\n"
+    end
+    
+    puts "\n"
+    print "Play again? (y/n) "
+    play_again = gets.chomp.downcase
+    yes_no(play_again)
+    puts "\n"
+    if play_again == "n"
+        break
     end
 end
-
-
 # Bonus ability to track player Wins
 
 # Bonus ability to share to social media or email
